@@ -10,3 +10,4 @@ fpdf2
 arabic_reshaper
 python-bidi
 plotly
+xlsxwriter
