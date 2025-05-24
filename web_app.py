@@ -27,6 +27,7 @@ if st.button("🚀 شروع پیش‌بینی"):
         if df.empty:
             st.error("❌ خطا در دریافت داده‌ها")
         else:
+            # Feature Engineering
             df['MA5'] = df['Close'].rolling(5).mean()
             df['PriceChange'] = df['Close'].pct_change()
             df['NextDayPrice'] = df['Close'].shift(-1)
@@ -38,6 +39,7 @@ if st.button("🚀 شروع پیش‌بینی"):
             X_train, X_test = X[:split], X[split:]
             y_train, y_test = y[:split], y[split:]
 
+            # Model Selection
             if model_choice == "Linear Regression":
                 model = LinearRegression()
             else:
@@ -46,7 +48,7 @@ if st.button("🚀 شروع پیش‌بینی"):
             model.fit(X_train, y_train)
             predictions = model.predict(X_test)
 
-            # Charts
+            # Plotting
             st.subheader(f"📈 نمودار قیمت واقعی و پیش‌بینی‌شده ({symbol})")
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=df.index[-len(y_test):], y=y_test, name="قیمت واقعی", line=dict(color="blue")))
@@ -72,7 +74,7 @@ if st.button("🚀 شروع پیش‌بینی"):
             col2.metric("آخرین قیمت", f"${latest_price:.2f}")
             col3.metric("پیش‌بینی فردا", f"${tomorrow_pred:.2f}", f"{change:+.1f}%")
 
-            # جدول گزارش کامل
+            # Full report table
             st.markdown("### 📋 جدول گزارش کامل:")
             report_df = pd.DataFrame({
                 "تاریخ": y_test.index,
@@ -85,17 +87,18 @@ if st.button("🚀 شروع پیش‌بینی"):
 
             st.dataframe(report_df, use_container_width=True)
 
-            # دکمه‌های دانلود
+            # File downloads
             csv = report_df.to_csv(index=False).encode('utf-8')
-            excel_file = BytesIO()
-           with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
-    report_df.to_excel(writer, index=False, sheet_name="Report")
 
+            excel_file = BytesIO()
+            with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
+                report_df.to_excel(writer, index=False, sheet_name="Report")
             excel_data = excel_file.getvalue()
 
             st.download_button("📥 دانلود CSV", csv, file_name="stock_report.csv", mime="text/csv")
             st.download_button("📥 دانلود Excel", excel_data, file_name="stock_report.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
+            # Final Feedback
             if accuracy > 60:
                 st.success("🏆 عالی! دقت مدل بالاست.")
             elif accuracy > 55:
