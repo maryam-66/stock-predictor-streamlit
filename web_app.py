@@ -5,7 +5,6 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 import plotly.graph_objects as go
-st.warning("نسخه جدید حرفه‌ای فعال است ✅")
 
 st.set_page_config(page_title="ربات پیش‌بینی سهام", page_icon="📈", layout="wide")
 
