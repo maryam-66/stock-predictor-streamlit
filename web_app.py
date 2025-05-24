@@ -88,9 +88,9 @@ if st.button("🚀 شروع پیش‌بینی"):
             # دکمه‌های دانلود
             csv = report_df.to_csv(index=False).encode('utf-8')
             excel_file = BytesIO()
-            with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
-                report_df.to_excel(writer, index=False, sheet_name="Report")
-                writer.save()
+           with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
+    report_df.to_excel(writer, index=False, sheet_name="Report")
+
             excel_data = excel_file.getvalue()
 
             st.download_button("📥 دانلود CSV", csv, file_name="stock_report.csv", mime="text/csv")
